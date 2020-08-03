@@ -1,5 +1,6 @@
-//process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 require("dotenv/config");
+const xmlParser = require("xml2json");
+
 const axios = require("axios").default;
 const CronJob = require("cron").CronJob;
 const { Pool } = require("pg");
