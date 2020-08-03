@@ -75,7 +75,7 @@ function sincVendas(obj) {
           dados.map((venda) => {
             const nfceBase64 = venda.nfce;
             let buff = new Buffer(nfceBase64, "base64");
-            let xml = buf.toString("ascii");
+            let xml = buff.toString("ascii");
             console.log(new Date(), "=>NFCe: ", xml);
           });
         })
