@@ -61,7 +61,6 @@ function sincVendas(obj) {
       console.log(res.data);
       const urlAutNFCe = `${process.env.URL_MAMBA}/api/v1/stone/pegaXML/`;
       const urlAutNFCeTratados = `${process.env.URL_MAMBA}/api/v1/stone/pegaXMLTratados/`;
-
       axios({
         method: "get",
         url: `${urlAutNFCe}${res.data.empresa.id}`,
@@ -76,7 +75,7 @@ function sincVendas(obj) {
           dados.map((venda) => {
             const nfceBase64 = venda.nfce;
             let buff = new Buffer(nfceBase64, "base64");
-            let xml = buf2.toString("ascii");
+            let xml = buf.toString("ascii");
             console.log(new Date(), "=>NFCe: ", xml);
           });
         })
