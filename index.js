@@ -47,13 +47,10 @@ pool
   .catch((err) => console.log(err.message));
 
 function sincVendas(obj) {
-  console.log(obj);
-  const urlAutNFCe = `${process.env.URL_MAMBA}/api/v1/stone/pegaXML/`;
-  const urlAutNFCeTratados = `${process.env.URL_MAMBA}/api/v1/stone/pegaXMLTratados/`;
-
+  const url = `${process.env.URL_MAMBA}/api/v1/stone/empresa/${obj.cnpj}`;
   axios({
     method: "get",
-    url: `${urlAutNFCe}${obj.serial}`,
+    url: url,
     headers: { "Content-Type": "application/json" },
     auth: {
       username: process.env.USER_MAMBA,
@@ -61,23 +58,40 @@ function sincVendas(obj) {
     },
   })
     .then((con) => {
-      console.log(new Date(), "=>NFCe: ", con.data.dados);
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
+      const urlAutNFCe = `${process.env.URL_MAMBA}/api/v1/stone/pegaXML/`;
+      const urlAutNFCeTratados = `${process.env.URL_MAMBA}/api/v1/stone/pegaXMLTratados/`;
 
-  axios({
-    method: "get",
-    url: `${urlAutNFCeTratados}${obj.serial}`,
-    headers: { "Content-Type": "application/json" },
-    auth: {
-      username: process.env.USER_MAMBA,
-      password: process.env.PASS_MAMBA,
-    },
-  })
-    .then((con) => {
-      console.log(new Date(), "=>NFCeTratados: ", con.data.dados);
+      axios({
+        method: "get",
+        url: `${urlAutNFCe}${con.id}`,
+        headers: { "Content-Type": "application/json" },
+        auth: {
+          username: process.env.USER_MAMBA,
+          password: process.env.PASS_MAMBA,
+        },
+      })
+        .then((con) => {
+          console.log(new Date(), "=>NFCe: ", con.data.dados);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+
+      axios({
+        method: "get",
+        url: `${urlAutNFCeTratados}${con.id}`,
+        headers: { "Content-Type": "application/json" },
+        auth: {
+          username: process.env.USER_MAMBA,
+          password: process.env.PASS_MAMBA,
+        },
+      })
+        .then((con) => {
+          console.log(new Date(), "=>NFCeTratados: ", con.data.dados);
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     })
     .catch((err) => {
       console.log(err.message);
