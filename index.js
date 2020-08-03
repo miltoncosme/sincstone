@@ -49,9 +49,27 @@ pool
 function sincVendas(obj) {
   console.log(obj);
   const urlAutNFCe = process.env.URL_MAMBA;
+  urlAutNFCe = `${process.env.URL_MAMBA}/api/v1/stone/pegaXML/`;
+  urlAutNFCeTratados = `${process.env.URL_MAMBA}/api/v1/stone/pegaXMLTratados/`;
+
   axios({
     method: "get",
     url: `${urlAutNFCe}${obj.serial}`,
+    headers: { "Content-Type": "application/json" },
+    auth: {
+      username: process.env.USER_MAMBA,
+      password: process.env.PASS_MAMBA,
+    },
+  })
+    .then((con) => {
+      console.log(new Date(), ": ", con.data);
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  axios({
+    method: "get",
+    url: `${urlAutNFCeTratados}${obj.serial}`,
     headers: { "Content-Type": "application/json" },
     auth: {
       username: process.env.USER_MAMBA,
