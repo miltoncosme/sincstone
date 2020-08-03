@@ -1,5 +1,5 @@
 require("dotenv/config");
-const xmlParser = require("xml2json");
+const xmlNFCeToJson = require("./xmlNFCeToJson");
 
 const axios = require("axios").default;
 const CronJob = require("cron").CronJob;
@@ -77,7 +77,7 @@ function sincVendas(obj) {
             const nfceBase64 = venda.nfce;
             let buff = new Buffer(nfceBase64, "base64");
             let xml = buff.toString("ascii");
-            console.log(new Date(), "=>NFCe: ", xml);
+            console.log(new Date(), "=>NFCe: ", xmlNFCeToJson(xml));
           });
         })
         .catch((err) => {
