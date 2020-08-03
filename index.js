@@ -61,7 +61,7 @@ function sincVendas(obj) {
     },
   })
     .then((con) => {
-      console.log(new Date(), ": ", con.data);
+      console.log(new Date(), "=>NFCe: ", con.data.dados);
     })
     .catch((err) => {
       console.log(err.message);
@@ -77,7 +77,7 @@ function sincVendas(obj) {
     },
   })
     .then((con) => {
-      console.log(new Date(), ": ", con.data);
+      console.log(new Date(), "=>NFCeTratados: ", con.data.dados);
     })
     .catch((err) => {
       console.log(err.message);
