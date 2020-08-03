@@ -3,7 +3,6 @@ require("dotenv/config");
 const axios = require("axios").default;
 const CronJob = require("cron").CronJob;
 const { Pool } = require("pg");
-const { conn } = require("../db.js");
 const { conn2 } = require("../db2.js");
 
 const qryBuscPDV = `select b.cnpj, a.caixa, a.serial from configcaixa a,empresa b
@@ -47,6 +46,7 @@ pool
   .catch((err) => console.log(err.message));
 
 function sincVendas(obj) {
+  console.log(obj);
   const url = `${process.env.URL_MAMBA}/api/v1/stone/empresa/${obj.cnpj}`;
   axios({
     method: "get",
@@ -57,13 +57,14 @@ function sincVendas(obj) {
       password: process.env.PASS_MAMBA,
     },
   })
-    .then((con) => {
+    .then((res) => {
+      console.log(res.data);
       const urlAutNFCe = `${process.env.URL_MAMBA}/api/v1/stone/pegaXML/`;
       const urlAutNFCeTratados = `${process.env.URL_MAMBA}/api/v1/stone/pegaXMLTratados/`;
 
       axios({
         method: "get",
-        url: `${urlAutNFCe}${con.id}`,
+        url: `${urlAutNFCe}${res.data.empresa.id}`,
         headers: { "Content-Type": "application/json" },
         auth: {
           username: process.env.USER_MAMBA,
