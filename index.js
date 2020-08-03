@@ -72,23 +72,13 @@ function sincVendas(obj) {
         },
       })
         .then((con) => {
-          console.log(new Date(), "=>NFCe: ", con.data.dados);
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
-
-      axios({
-        method: "get",
-        url: `${urlAutNFCeTratados}${con.id}`,
-        headers: { "Content-Type": "application/json" },
-        auth: {
-          username: process.env.USER_MAMBA,
-          password: process.env.PASS_MAMBA,
-        },
-      })
-        .then((con) => {
-          console.log(new Date(), "=>NFCeTratados: ", con.data.dados);
+          const { dados } = con.data;
+          dados.map((venda) => {
+            const nfceBase64 = venda.nfce;
+            let buff = new Buffer(nfceBase64, "base64");
+            let xml = buf2.toString("ascii");
+            console.log(new Date(), "=>NFCe: ", xml);
+          });
         })
         .catch((err) => {
           console.log(err.message);
