@@ -88,7 +88,7 @@ function sincVendas(obj, namedb) {
 
             async function gravaVenda(idempresa, NFe, Aut) {
               try {
-                console.log(NFe.infNFe.det[0]);
+                console.log(NFe.infNFe.det[0].prod);
 
                 const qryValues = [
                   idempresa,
@@ -108,7 +108,7 @@ function sincVendas(obj, namedb) {
                   null,
                   null,
                   2,
-                  NFe.infNFe.det.prod.CFOP || NFe.infNFe.det[0].prod.CFOP,
+                  NFe.infNFe.det[0].prod.CFOP,
                   false,
                   false,
                   NFe.infNFe.total.ICMSTot.vNF,
