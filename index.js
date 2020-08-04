@@ -76,8 +76,9 @@ function sincVendas(obj, namedb) {
           dados.map((venda) => {
             const nfceBase64 = venda.nfce;
             let buff = new Buffer(nfceBase64, "base64");
-            let xml = buff.toString("ascii");
-            console.log(new Date(), "=>NFCe: ", xmlNFCeToJson(xml));
+            let XML = buff.toString("ascii");
+            const xml = xmlNFCeToJson(XML);
+            console.log(new Date(), "=>NFCe: ", xml);
             const idempresa = obj.id;
             const pool = new Pool(conn2(namedb));
             const NFe =
