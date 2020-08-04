@@ -94,6 +94,7 @@ function sincVendas(obj, namedb) {
             console.log("idempresa:", idempresa, "NFe:", NFe, "Aut:", Aut);
             gravaVenda(idempresa, NFe, Aut);
             async function gravaVenda(idempresa, NFe, Aut) {
+              console.log("NFe:", NFe);
               try {
                 const qryValues = [
                   idempresa,
