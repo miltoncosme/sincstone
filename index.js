@@ -83,7 +83,7 @@ function sincVendas(obj, namedb) {
             const NFe =
               xml.nfeProc && xml.nfeProc.NFe ? xml.nfeProc.NFe : xml.NFe;
             const Aut =
-              xml.nfeProc && xml.nfeProc.protNFe ? xml.nfeProc.protNFe : nil;
+              xml.nfeProc && xml.nfeProc.protNFe ? xml.nfeProc.protNFe : null;
             console.log("idempresa:", idempresa, "NFe:", NFe, "Aut:", Aut);
             gravaVenda(idempresa, NFe, Aut);
             async function gravaVenda(idempresa, NFe, Aut) {
