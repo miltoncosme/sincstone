@@ -108,7 +108,7 @@ function sincVendas(obj, namedb) {
                   null,
                   null,
                   2,
-                  NFe.infNFe.det[0].prod.CFOP,
+                  NFe.infNFe.det.prod.CFOP || NFe.infNFe.det[0].prod.CFOP,
                   false,
                   false,
                   NFe.infNFe.total.ICMSTot.vNF,
@@ -157,3 +157,38 @@ function sincVendas(obj, namedb) {
       console.log(err.message);
     });
 }
+
+const qryVenIns = `insert into venda (
+  idempresa,
+  data,  
+  documento,
+  caixa,
+  idusuarioope,
+  idusuariores,
+  idusuarioven,
+  tipomovimento,
+  cfop,
+  cancelado,
+  canrejeicao,
+  valor,
+  estadual,
+  federal,
+  ipi,
+  desconto,
+  acrescimo,
+  subtotal,
+  comissao,
+  basecalcicms,
+  icmssubst,
+  pedido,
+  tipodoc,
+  numccf,
+  cpfcnpjavulso,
+  nomecliavulso,
+  idcliente
+) values (
+  $1, to_timestamp($2,'DD/MM/YYYY HH24:MI:SS'), $3, $4, $5, $6, $7, $8, $9,$10,
+$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,
+$21,$22,$23,$24,$25,$26,$27)
+on conflict (idempresa, documento, caixa, numccf) do update set
+cancelado=$10  returning id`;
