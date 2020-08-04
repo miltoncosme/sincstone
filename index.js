@@ -82,17 +82,15 @@ function sincVendas(obj, namedb) {
             const idempresa = obj.id;
             const pool = new Pool(conn2(namedb));
             console.log("xmlJson:", xml);
-            var nfce;
+
             if (xml.nfeProc && xml.nfeProc.NFe) {
-              nfce = xml.nfeProc.NFe;
+              const { NFe } = xml.nfeProc;
+              gravaVenda(idempresa, NFe);
             } else if (xml.NFe) {
-              nfce = xml.NFe;
+              const { NFe } = xml;
+              gravaVenda(idempresa, NFe);
             }
 
-            const Aut =
-              xml.nfeProc && xml.nfeProc.protNFe ? xml.nfeProc.protNFe : null;
-            console.log("idempresa:", idempresa, "NFe:", nfce, "Aut:", Aut);
-            gravaVenda(idempresa, nfce, Aut);
             async function gravaVenda(idempresa, NFe, Aut) {
               console.log("NFe:", NFe);
               try {
@@ -139,80 +137,7 @@ function sincVendas(obj, namedb) {
                 const venda = await pool.query(qryVenIns, qryValues);
                 const { id } = venda.rows[0];
                 console.log("id de insert", id);
-                /*
-                if (param.cancelado === true) {
-                  await pool.query(`delete from vendarec where idvenda=${id}`);
-                } else {
-                  for (let i = 0; i < param.rec.length; i++) {
-                    const r = param.rec[i];
-                    const qryRecValues = [
-                      id,
-                      r.idfinalizadora,
-                      r.descricaofin,
-                      r.data,
-                      r.hora,
-                      r.valor,
-                      r.troco,
-                      r.tef,
-                      r.nsu,
-                      r.rede,
-                      r.msg,
-                      r.nrparcelas,
-                      r.origem,
-                    ];
-                    await pool.query(qryRecIns, qryRecValues);
-                  }
-                }
-                for (let x = 0; x < param.mov.length; x++) {
-                  const m = param.mov[x];
-                  const qryMovValues = [
-                    id,
-                    m.data,
-                    m.hora,
-                    m.codproduto,
-                    m.descricao,
-                    m.unidade,
-                    m.antes,
-                    m.qtd,
-                    m.depois,
-                    m.compra,
-                    m.venda,
-                    m.comissao,
-                    m.cancelado,
-                    m.desconto,
-                    m.item,
-                    m.subtotal,
-                    m.idgrupo,
-                    m.cfop,
-                    m.sticms,
-                    m.stpiscofins,
-                    m.stipi,
-                    m.aliicms,
-                    m.alipis,
-                    m.alicofins,
-                    m.aliipi,
-                    m.vlricms,
-                    m.vlripi,
-                    m.vlrpis,
-                    m.vlrcofins,
-                    m.ncm,
-                    m.cest,
-                    m.idusuacan,
-                  ];
-                  await pool.query(qryMovIns, qryMovValues);
-                }
-                if (param.xml) {
-                  const qryXMLValues = [
-                    id,
-                    param.xml.datanf,
-                    param.xml.chave,
-                    param.xml.status,
-                    param.xml.motivo,
-                    param.xml.nfxml,
-                  ];
-                  await pool.query(qryVenXML, qryXMLValues);
-                }
-                */
+
                 await pool.query("COMMIT");
                 console.log("OK");
               } catch (error) {
