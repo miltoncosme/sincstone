@@ -88,7 +88,7 @@ function sincVendas(obj, namedb) {
 
             async function gravaVenda(idempresa, NFe, Aut) {
               try {
-                console.log(NFe.infNFe);
+                console.log(NFe.infNFe.det);
 
                 const qryValues = [
                   idempresa,
