@@ -8,3 +8,4 @@ let base64data = buff.toString("base64");
 let buff2 = new Buffer(base64data, "base64");
 let xml = buff2.toString("ascii");
 console.log(xmlNFCeToJson(xml));
+console.log(typeof xmlNFCeToJson(xml));
