@@ -81,8 +81,14 @@ function sincVendas(obj, namedb) {
             console.log(new Date(), "=>NFCe: ", xml);
             const idempresa = obj.id;
             const pool = new Pool(conn2(namedb));
-            const NFe =
-              xml.nfeProc && xml.nfeProc.NFe ? xml.nfeProc.NFe : xml.NFe;
+            console.log("xmlJson:", xml);
+            var NFe;
+            if (xml.nfeProc && xml.nfeProc.NFe) {
+              NFe = xml.nfeProc.NFe;
+            } else if (xml.NFe) {
+              NFe = xml.NFe;
+            }
+
             const Aut =
               xml.nfeProc && xml.nfeProc.protNFe ? xml.nfeProc.protNFe : null;
             console.log("idempresa:", idempresa, "NFe:", NFe, "Aut:", Aut);
