@@ -47,7 +47,6 @@ pool
   .catch((err) => console.log(err.message));
 
 function sincVendas(obj, namedb) {
-  console.log(obj);
   const url = `${process.env.URL_MAMBA}/api/v1/stone/empresa/${obj.cnpj}`;
   axios({
     method: "get",
@@ -59,7 +58,6 @@ function sincVendas(obj, namedb) {
     },
   })
     .then((res) => {
-      console.log(res.data);
       const urlAutNFCe = `${process.env.URL_MAMBA}/api/v1/stone/pegaXML/`;
       const urlAutNFCeTratados = `${process.env.URL_MAMBA}/api/v1/stone/pegaXMLTratados/`;
       axios({
@@ -78,11 +76,8 @@ function sincVendas(obj, namedb) {
             let buff = new Buffer(nfceBase64, "base64");
             let XML = buff.toString("ascii");
             const xml = xmlNFCeToJson(XML);
-            console.log(new Date(), "=>NFCe: ", xml);
             const idempresa = obj.id;
             const pool = new Pool(conn2(namedb));
-            console.log("xmlJson:", xml);
-
             if (xml.nfeProc && xml.nfeProc.NFe) {
               const { NFe } = xml.nfeProc;
               gravaVenda(idempresa, NFe);
@@ -92,7 +87,6 @@ function sincVendas(obj, namedb) {
             }
 
             async function gravaVenda(idempresa, NFe, Aut) {
-              console.log("NFe:", NFe);
               try {
                 const qryValues = [
                   idempresa,
