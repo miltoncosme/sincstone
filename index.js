@@ -84,6 +84,7 @@ function sincVendas(obj, namedb) {
               xml.nfeProc && xml.nfeProc.NFe ? xml.nfeProc.NFe : xml.NFe;
             const Aut =
               xml.nfeProc && xml.nfeProc.protNFe ? xml.nfeProc.protNFe : nil;
+            console.log("idempresa:", idempresa, "NFe:", NFe, "Aut:", Aut);
             gravaVenda(idempresa, NFe, Aut);
             async function gravaVenda(idempresa, NFe, Aut) {
               try {
@@ -209,6 +210,7 @@ function sincVendas(obj, namedb) {
               } catch (error) {
                 await pool.query("ROLLBACK");
                 const e = error.message;
+                console.log(e);
                 if (e.includes("duplicate")) {
                   //
                 } else {
