@@ -122,7 +122,7 @@ function sincVendas(obj, namedb) {
                   0,
                   NFe.infNFe.total.ICMSTot.vBC,
                   0,
-                  null,
+                  0,
                   "65",
                   NFe.infNFe.ide.nNF,
                   null,
