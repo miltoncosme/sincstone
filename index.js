@@ -87,6 +87,88 @@ function sincVendas(obj, namedb) {
               } else if (xml.NFe) {
                 const { NFe } = xml;
                 gravaVenda(idempresa, NFe);
+              } else if (xml.ProcInutNFe) {
+                gravaInutilizada(idempresa, xml.ProcInutNFe);
+              }
+              async function gravaInutilizada(idempresa, xmlInu, Aut) {
+                try {
+                  const qryValues = [
+                    idempresa,
+                    xmlInu.retInutNFe.infInut.dhRecbto,
+                    ("000000" + Number(xmlInu.retInutNFe.infInut.nNFIni)).slice(
+                      -6
+                    ),
+                    ("000" + Number(xmlInu.retInutNFe.infInut.serie)).slice(-3),
+                    0,
+                    null,
+                    null,
+                    2,
+                    "5102",
+                    true,
+                    true,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    "65",
+                    xmlInu.retInutNFe.infInut.nNFIni,
+                    null,
+                    null,
+                    null,
+                  ];
+                  await pool.query("BEGIN");
+                  let venda = await pool.query(qryVenIns, qryValues);
+                  await pool.query(
+                    `update vendamov set cancelado=false where idvenda=${venda.rows[0].id}`
+                  );
+                  await pool.query(
+                    `delete from vendarec where idvenda=${venda.rows[0].id}`
+                  );
+                  const qryXMLValues = [
+                    venda.rows[0].id,
+                    xmlInu.retInutNFe.infInut.dhRecbto,
+                    String(xmlInu.retInutNFe.infInut.Id)
+                      .substring(3, 47)
+                      .trim(),
+                    "102",
+                    "Inutilizacao de numero homologado",
+                    nfceBase64,
+                  ];
+                  await pool.query(qryVenXML, qryXMLValues);
+                  console.log("respondendo:", `${urlAutNFCe}${dadosVenda.id}`);
+                  axios({
+                    method: "post",
+                    url: `${urlAutNFCe}${dadosVenda.id}`,
+                    headers: { "Content-Type": "application/json" },
+                    auth: {
+                      username: process.env.USER_MAMBA,
+                      password: process.env.PASS_MAMBA,
+                    },
+                  })
+                    .then(() => {
+                      pool.query("COMMIT");
+                      console.log(
+                        "Inutilizacao gravado com sucesso!",
+                        "ID:",
+                        dadosVenda.id
+                      );
+                    })
+                    .catch((err) => {
+                      pool.query("ROLLBACK");
+                      console.log(err.message);
+                    });
+                } catch (error) {
+                  await pool.query("ROLLBACK");
+                  const e = error.message;
+                  console.log(e);
+                }
               }
 
               async function gravaVenda(idempresa, NFe, Aut) {
