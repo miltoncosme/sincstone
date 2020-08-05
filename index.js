@@ -9,44 +9,44 @@ const { conn2 } = require("../db2.js");
 const qryBuscPDV = `select b.id, b.cnpj, a.caixa, a.serial from configcaixa a,empresa b
                     where a.idempresa=b.id and a.equipamento=3`;
 
-let pool = new Pool({
-  user: process.env.USER_DB,
-  password: process.env.PASS_DB,
-  host: "localhost",
-  database: "postgres",
-  port: process.env.PORT_DB,
-});
-console.log("Carregando lista de banco de dados...");
-pool
-  .query(
-    `SELECT datname FROM pg_database WHERE datistemplate = false and datname like 'DB-SL-%'`
-  )
-  .then((con) => {
-    con.rows.map((db) => {
-      console.log("Conectando ao banco", db.datname);
-      let pool = new Pool(conn2(db.datname));
-      pool
-        .query(qryBuscPDV)
-        .then((con) => {
-          con.rows.map((pdv) => {
-            const job = new CronJob(
-              "*/25 * * * * *",
-              function () {
-                sincVendas(pdv, db.datname);
-              },
-              null,
-              false,
-              "America/Sao_Paulo"
-            );
-            job.start();
-          });
-        })
-        .catch((err) => {
-          console.log("erro: ", err.message);
-        });
+const job = new CronJob(
+  "*/25 * * * * *",
+  function () {
+    console.log("Carregando lista de banco de dados...");
+    let pool = new Pool({
+      user: process.env.USER_DB,
+      password: process.env.PASS_DB,
+      host: "localhost",
+      database: "postgres",
+      port: process.env.PORT_DB,
     });
-  })
-  .catch((err) => console.log(err.message));
+    pool
+      .query(
+        `SELECT datname FROM pg_database WHERE datistemplate = false and datname like 'DB-SL-%'`
+      )
+      .then((con) => {
+        con.rows.map((db) => {
+          console.log("Conectado ao banco", db.datname);
+          let pool = new Pool(conn2(db.datname));
+          pool
+            .query(qryBuscPDV)
+            .then((con) => {
+              con.rows.map((pdv) => {
+                sincVendas(pdv, db.datname);
+              });
+            })
+            .catch((err) => {
+              console.log("erro: ", err.message);
+            });
+        });
+      })
+      .catch((err) => console.log(err.message));
+  },
+  null,
+  false,
+  "America/Sao_Paulo"
+);
+job.start();
 
 function sincVendas(obj, namedb) {
   const url = `${process.env.URL_MAMBA}/api/v1/stone/empresa/${obj.cnpj}`;
