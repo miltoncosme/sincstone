@@ -16,12 +16,14 @@ let pool = new Pool({
   database: "postgres",
   port: process.env.PORT_DB,
 });
+console.log("Carregando lista de banco de dados...");
 pool
   .query(
     `SELECT datname FROM pg_database WHERE datistemplate = false and datname like 'DB-SL-%'`
   )
   .then((con) => {
     con.rows.map((db) => {
+      console.log("Conectando ao banco", db.datname);
       let pool = new Pool(conn2(db.datname));
       pool
         .query(qryBuscPDV)
