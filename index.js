@@ -97,7 +97,9 @@ function sincVendas(obj, namedb) {
                   null,
                   null,
                   2,
-                  NFe.infNFe.det[0].prod.CFOP,
+                  NFe.infNFe.det.prod
+                    ? NFe.infNFe.det.prod.CFOP
+                    : NFe.infNFe.det[0].prod.CFOP,
                   false,
                   false,
                   NFe.infNFe.total.ICMSTot.vNF,

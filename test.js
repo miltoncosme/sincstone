@@ -14,6 +14,6 @@ console.log(typeof xmlNFCeToJson(xml));
 */
 
 sincVendas(
-  { id: 0, cnpj: "12858700000109", caixa: "007", serial: "123123123" },
+  { id: 0, cnpj: "12858700000109", caixa: "007", serial: "196619674" },
   "DB-SL-test"
 );
